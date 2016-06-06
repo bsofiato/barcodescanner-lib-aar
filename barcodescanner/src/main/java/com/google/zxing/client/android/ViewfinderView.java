@@ -89,10 +89,12 @@ public final class ViewfinderView extends View {
     Paint paintCrossHair = new Paint();
 
     paintCrossHair.setColor(Color.argb(126, 255, 255, 255)); // Branco  -- Colocar depois em resource
-    paintCrossHair.setStrokeWidth(15);
+    paintCrossHair.setStrokeWidth(20);
     paintCrossHair.setStrokeCap(Paint.Cap.ROUND);
+    paintCrossHair.setStrokeJoin(Paint.Join.ROUND);
+    paintCrossHair.setStyle(Paint.Style.STROKE);
 
-/*    Path path = new Path();
+    Path path = new Path();
 
     path.moveTo(frame.left, (frame.top + segmentY));
     path.lineTo(frame.left, frame.top);
@@ -108,11 +110,11 @@ public final class ViewfinderView extends View {
 
     path.moveTo(frame.left, (frame.bottom - segmentY));
     path.lineTo(frame.left, frame.bottom);
-    path.lineTo((frame.right + segmentX), frame.bottom);
+    path.lineTo((frame.left + segmentX), frame.bottom);
 
-    canvas.drawPath(path, paintCrossHair);*/
+    canvas.drawPath(path, paintCrossHair);
 
-    canvas.drawLine(frame.left, frame.top, (frame.left + segmentX), frame.top, paintCrossHair);
+    /*canvas.drawLine(frame.left, frame.top, (frame.left + segmentX), frame.top, paintCrossHair);
     canvas.drawLine(frame.left, frame.top, frame.left, (frame.top + segmentY), paintCrossHair);
 
     canvas.drawLine(frame.left, frame.bottom, (frame.left + segmentX), frame.bottom, paintCrossHair);
@@ -122,7 +124,7 @@ public final class ViewfinderView extends View {
     canvas.drawLine(frame.right, frame.top, frame.right, (frame.top + segmentY), paintCrossHair);
 
     canvas.drawLine(frame.right, frame.bottom, (frame.right - segmentX), frame.bottom, paintCrossHair);
-    canvas.drawLine(frame.right, frame.bottom, frame.right, (frame.bottom - segmentY), paintCrossHair);
+    canvas.drawLine(frame.right, frame.bottom, frame.right, (frame.bottom - segmentY), paintCrossHair);*/
 
   }
   @SuppressLint("DrawAllocation")
