@@ -25,7 +25,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -79,6 +81,50 @@ public final class ViewfinderView extends View {
     this.cameraManager = cameraManager;
   }
 
+  private void drawCrosshair(Canvas canvas, Rect frame) {
+
+    int segmentX = (frame.right - frame.left) / 3;
+    int segmentY = (frame.bottom - frame.top) / 3;
+
+    Paint paintCrossHair = new Paint();
+
+    paintCrossHair.setColor(Color.argb(126, 255, 255, 255)); // Branco  -- Colocar depois em resource
+    paintCrossHair.setStrokeWidth(15);
+    paintCrossHair.setStrokeCap(Paint.Cap.ROUND);
+
+/*    Path path = new Path();
+
+    path.moveTo(frame.left, (frame.top + segmentY));
+    path.lineTo(frame.left, frame.top);
+    path.lineTo((frame.left + segmentX), frame.top);
+
+    path.moveTo((frame.right - segmentX), frame.top);
+    path.lineTo(frame.right, frame.top);
+    path.lineTo(frame.right, (frame.top + segmentY));
+
+    path.moveTo(frame.right, (frame.bottom - segmentY));
+    path.lineTo(frame.right, frame.bottom);
+    path.lineTo((frame.right - segmentX), frame.bottom);
+
+    path.moveTo(frame.left, (frame.bottom - segmentY));
+    path.lineTo(frame.left, frame.bottom);
+    path.lineTo((frame.right + segmentX), frame.bottom);
+
+    canvas.drawPath(path, paintCrossHair);*/
+
+    canvas.drawLine(frame.left, frame.top, (frame.left + segmentX), frame.top, paintCrossHair);
+    canvas.drawLine(frame.left, frame.top, frame.left, (frame.top + segmentY), paintCrossHair);
+
+    canvas.drawLine(frame.left, frame.bottom, (frame.left + segmentX), frame.bottom, paintCrossHair);
+    canvas.drawLine(frame.left, frame.bottom, frame.left, (frame.bottom - segmentY), paintCrossHair);
+
+    canvas.drawLine(frame.right, frame.top, (frame.right - segmentX), frame.top, paintCrossHair);
+    canvas.drawLine(frame.right, frame.top, frame.right, (frame.top + segmentY), paintCrossHair);
+
+    canvas.drawLine(frame.right, frame.bottom, (frame.right - segmentX), frame.bottom, paintCrossHair);
+    canvas.drawLine(frame.right, frame.bottom, frame.right, (frame.bottom - segmentY), paintCrossHair);
+
+  }
   @SuppressLint("DrawAllocation")
   @Override
   public void onDraw(Canvas canvas) {
@@ -93,12 +139,17 @@ public final class ViewfinderView extends View {
     int width = canvas.getWidth();
     int height = canvas.getHeight();
 
+
+    drawCrosshair(canvas, frame);
+
+
     // Draw the exterior (i.e. outside the framing rect) darkened
-    paint.setColor(resultBitmap != null ? resultColor : maskColor);
-    canvas.drawRect(0, 0, width, frame.top, paint);
-    canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);
-    canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1, paint);
-    canvas.drawRect(0, frame.bottom + 1, width, height, paint);
+    //paint.setColor(resultBitmap != null ? resultColor : maskColor);
+	
+    //canvas.drawRect(0, 0, width, frame.top, paint);
+    //canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);
+    //canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1, paint);
+    //canvas.drawRect(0, frame.bottom + 1, width, height, paint);
 
     if (resultBitmap != null) {
       // Draw the opaque result bitmap over the scanning rectangle
@@ -107,11 +158,11 @@ public final class ViewfinderView extends View {
     } else {
 
       // Draw a red "laser scanner" line through the middle to show decoding is active
-      paint.setColor(laserColor);
-      paint.setAlpha(SCANNER_ALPHA[scannerAlpha]);
-      scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.length;
-      int middle = frame.height() / 2 + frame.top;
-      canvas.drawRect(frame.left + 2, middle - 1, frame.right - 1, middle + 2, paint);
+    //  paint.setColor(laserColor);
+//      paint.setAlpha(SCANNER_ALPHA[scannerAlpha]);
+      //scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.length;
+      //int middle = frame.height() / 2 + frame.top;
+      //canvas.drawRect(frame.left + 2, middle - 1, frame.right - 1, middle + 2, paint);
       
       float scaleX = frame.width() / (float) previewFrame.width();
       float scaleY = frame.height() / (float) previewFrame.height();
